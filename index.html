@@ -326,7 +326,7 @@
     const startDateEl = document.getElementById('startDate');
     const savedStart = LS.get(startKey);
     if(savedStart) startDateEl.value = savedStart;
-    else startDateEl.valueAsDate = new Date(); // TODO: 둘이 시작한 날로 변경!
+    else startDateEl.value = "2025-09-03"; // TODO: 둘이 시작한 날로 변경!
 
     function updateCounter(){
       const from = new Date(startDateEl.value);
