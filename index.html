@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>승빈 × 유리 | our little universe</title>
+  <meta name="description" content="우리 둘만의 작은 우주 🌙" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg: #0b0f17;
+      --bg-2: #101726;
+      --accent: #e66bd4;
+      --accent-2:#75d6ff;
+      --glass:#ffffff10;
+      --text:#ecf0f7;
+      --muted:#b8c1d9;
+      --ring:#ffffff40;
+      --card:#11182680;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 18px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; color:var(--text);
+      font-family:"Pretendard", system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans KR", sans-serif;
+      background: radial-gradient(1200px 800px at 20% -10%, #281b4a, transparent),
+                  radial-gradient(1000px 700px at 120% -20%, #143552, transparent),
+                  linear-gradient(180deg, #0b0f17 0%, #0b0f17 40%, #121a2d 100%);
+      overflow-x:hidden;
+    }
+    a{color:inherit;text-decoration:none}
+    .container{max-width:1100px;margin:0 auto;padding:24px}
+
+    /* Floating hearts background */
+    canvas.bg{position:fixed;inset:0;z-index:-1;filter: drop-shadow(0 0 6px rgba(255,255,255,.2));}
+
+    /* Nav */
+    .nav{
+      position:sticky;top:0;backdrop-filter: blur(14px);
+      background: linear-gradient(180deg, #0b0f17cc, #0b0f1700);
+      border-bottom:1px solid var(--glass); z-index:20;
+    }
+    .nav-inner{display:flex;align-items:center;gap:14px;padding:14px 24px}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:700}
+    .dot{width:8px;height:8px;border-radius:50%;background:conic-gradient(from 0deg, var(--accent), var(--accent-2));}
+    .nav-links{margin-left:auto;display:flex;gap:14px;flex-wrap:wrap}
+    .chip{padding:8px 12px;border:1px solid var(--glass);border-radius:999px;background:#ffffff06}
+    .chip:hover{border-color:var(--ring)}
+
+    /* Hero */
+    .hero{padding:70px 24px 36px}
+    .hero .names{
+      display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap
+    }
+    .heart{width:28px;height:28px;display:inline-block}
+    .title{
+      text-align:center;
+      font-family:"Playfair Display", serif;
+      font-weight:700; letter-spacing:.6px; line-height:1.1;
+      font-size: clamp(38px, 6vw, 68px);
+      background: linear-gradient(120deg, #fff, #d2e8ff 30%, #ffd3f6 60%, #fff);
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
+    .subtitle{ text-align:center; color:var(--muted); margin-top:10px }
+
+    /* Cards grid */
+    .grid{display:grid;grid-template-columns:1fr;gap:18px;margin-top:26px}
+    @media(min-width:860px){.grid{grid-template-columns:1.2fr .8fr}}
+    .card{border:1px solid var(--glass);border-radius:var(--radius);background:linear-gradient(180deg, #0e1526aa, #0e152680); box-shadow:var(--shadow)}
+    .card > .hd{display:flex;align-items:center;gap:10px;padding:18px 20px;border-bottom:1px solid var(--glass)}
+    .card > .bd{padding:20px}
+    .tag{font-size:12px;padding:6px 10px;border:1px solid var(--glass);border-radius:999px;color:#cfe7ff;background:#ffffff07}
+    .row{display:flex;gap:12px;flex-wrap:wrap}
+
+    /* Counter */
+    .counter{
+      display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px
+    }
+    .pill{padding:16px;border:1px solid var(--glass);border-radius:14px;background:#ffffff07;text-align:center}
+    .pill h3{margin:0;font-size:26px}
+    .pill p{margin:6px 0 0;color:var(--muted);font-size:13px}
+
+    /* Timeline */
+    .timeline{position:relative;margin-top:10px}
+    .timeline::before{content:"";position:absolute;left:16px;top:0;bottom:0;width:2px;background:linear-gradient(var(--accent), transparent 60%)}
+    .step{display:grid;grid-template-columns:36px 1fr;gap:12px;margin:12px 0}
+    .dot2{width:12px;height:12px;border-radius:50%;margin:6px 12px;background:radial-gradient(circle at 30% 30%, #fff, var(--accent)); box-shadow:0 0 12px #e66bd4aa}
+    .step h4{margin:0 0 6px;font-size:16px}
+    .step p{margin:0;color:var(--muted)}
+
+    /* Gallery */
+    .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+    .ph{
+      position:relative;aspect-ratio:1/1.1;border-radius:12px;overflow:hidden;border:1px dashed var(--glass);
+      background: linear-gradient(180deg,#152135,#0e1629);display:grid;place-items:center;color:#97a7c7
+    }
+    .ph input{display:none}
+    .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+    .ph label{cursor:pointer;padding:8px 10px;font-size:12px;border:1px solid var(--glass);border-radius:10px;background:#ffffff0a}
+
+    /* Love Letter */
+    textarea{
+      width:100%;min-height:140px;resize:vertical;padding:14px;border-radius:12px;border:1px solid var(--glass);
+      background:#0e1626;color:var(--text);box-shadow:inset 0 1px 0 #ffffff08
+    }
+    .btn{
+      display:inline-flex;align-items:center;gap:8px;cursor:pointer;
+      padding:12px 16px;border-radius:12px;border:1px solid var(--glass);
+      background:linear-gradient(180deg,#1a2440,#121b31); color:#fff; transition:.2s;
+    }
+    .btn:hover{transform:translateY(-1px);border-color:var(--ring)}
+    .btn.primary{background:linear-gradient(180deg,#c86ae7,#8070ff)}
+
+    /* Bucket list */
+    .list{display:grid;gap:10px;margin-top:10px}
+    .li{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--glass);border-radius:12px;background:#ffffff08}
+    .li input[type="checkbox"]{width:18px;height:18px}
+
+    /* Footer */
+    footer{opacity:.8;text-align:center;padding:30px 0 60px;color:var(--muted)}
+
+    /* Cute micro‑anim */
+    @keyframes pop {0%{transform:scale(.9)} 60%{transform:scale(1.02)} 100%{transform:scale(1)}}
+    .pop{animation:pop .4s ease}
+  </style>
+</head>
+<body>
+  <canvas class="bg" id="bg"></canvas>
+
+  <header class="nav">
+    <div class="nav-inner container">
+      <div class="brand"><span class="dot"></span>우리의 기록</div>
+      <div class="nav-links">
+        <a class="chip" href="#counter">함께한 시간</a>
+        <a class="chip" href="#story">타임라인</a>
+        <a class="chip" href="#gallery">갤러리</a>
+        <a class="chip" href="#letter">러브레터</a>
+        <a class="chip" href="#bucket">버킷리스트</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero container">
+    <div class="names">
+      <h1 class="title">승빈</h1>
+      <svg class="heart" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 21s-7.5-4.8-9.6-8.9C.3 8.9 2.1 5.2 5.4 4.3c1.9-.5 3.9.2 5.1 1.6 1.1-1.4 3.2-2.1 5.1-1.6 3.3.9 5.1 4.6 3 7.8C19.5 16.2 12 21 12 21Z" fill="url(#g)"/>
+        <defs><linearGradient id="g" x1="0" x2="24" y1="0" y2="24" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#ff9ad6"/><stop offset="1" stop-color="#96c9ff"/></linearGradient></defs>
+      </svg>
+      <h1 class="title">유리</h1>
+    </div>
+    <p class="subtitle">우리 둘만의 작은 우주에 오신 걸 환영합니다 ✨<br>매일 조금씩, 사랑을 쌓아가는 기록.</p>
+  </section>
+
+  <main class="container">
+    <div class="grid">
+      <!-- LEFT COLUMN -->
+      <section class="card" id="counter">
+        <div class="hd">
+          <span class="tag">together counter</span>
+        </div>
+        <div class="bd">
+          <div class="row" style="align-items:center;justify-content:space-between">
+            <div>
+              <h2 style="margin:0 0 6px">우리가 함께한 시간</h2>
+              <p style="margin:0;color:var(--muted)">처음 마음을 확인한 날부터 지금까지 ❤️</p>
+            </div>
+            <div class="row">
+              <label class="tag" title="여기를 바꿔 시작일을 설정하세요">
+                시작일 <input id="startDate" type="date" style="background:transparent;border:none;color:#fff;outline:none" />
+              </label>
+              <button class="btn" id="saveStart">저장</button>
+            </div>
+          </div>
+          <div class="counter" style="margin-top:16px">
+            <div class="pill"><h3 id="d">0</h3><p>Days</p></div>
+            <div class="pill"><h3 id="h">0</h3><p>Hours</p></div>
+            <div class="pill"><h3 id="m">0</h3><p>Minutes</p></div>
+            <div class="pill"><h3 id="s">0</h3><p>Seconds</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" id="story">
+        <div class="hd"><span class="tag">our timeline</span></div>
+        <div class="bd">
+          <h2 style="margin:0 0 6px">우린 이렇게 시작됐어</h2>
+          <p class="subtitle" style="text-align:left;margin:0 0 12px">포스트잇처럼 작은 순간들이 모여 큰 이야기로.</p>
+          <div class="timeline" id="timeline"></div>
+          <div class="row" style="margin-top:12px">
+            <input id="tlDate" type="date" class="tag"/>
+            <input id="tlText" type="text" placeholder="그날의 프롬프트나 추억 한 줄" class="tag" style="min-width:260px;background:#081022;color:#cfe7ff" />
+            <button class="btn" id="addStep">추가</button>
+            <button class="btn" id="clearStep" title="타임라인 전체 삭제">초기화</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT COLUMN -->
+      <section class="card" id="gallery">
+        <div class="hd"><span class="tag">our gallery</span></div>
+        <div class="bd">
+          <h2 style="margin:0 0 12px">사진첩</h2>
+          <div class="gallery">
+            <div class="ph"><label>사진 추가<input type="file" accept="image/*"/></label></div>
+            <div class="ph"><label>사진 추가<input type="file" accept="image/*"/></label></div>
+            <div class="ph"><label>사진 추가<input type="file" accept="image/*"/></label></div>
+            <div class="ph"><label>사진 추가<input type="file" accept="image/*"/></label></div>
+            <div class="ph"><label>사진 추가<input type="file" accept="image/*"/></label></div>
+            <div class="ph"><label>사진 추가<input type="file" accept="image/*"/></label></div>
+          </div>
+          <div class="row" style="margin-top:12px">
+            <button class="btn" id="saveGallery">갤러리 저장</button>
+            <button class="btn" id="clearGallery">전체 비우기</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" id="letter">
+        <div class="hd"><span class="tag">love letter</span></div>
+        <div class="bd">
+          <h2 style="margin:0 0 6px">오늘의 러브레터</h2>
+          <p class="subtitle" style="text-align:left;margin:0 0 12px">하루에 한 줄이라도, 마음을 적어두기.</p>
+          <textarea id="letterArea" placeholder="유리야, 오늘은 이런 생각이 들었어…"></textarea>
+          <div class="row" style="margin-top:10px">
+            <button class="btn primary" id="saveLetter">저장</button>
+            <button class="btn" id="newLetter">새로 쓰기</button>
+          </div>
+          <div style="margin-top:16px">
+            <h3 style="margin:0 0 8px">보관함</h3>
+            <div id="letters" class="list"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" id="bucket">
+        <div class="hd"><span class="tag">couple bucket list</span></div>
+        <div class="bd">
+          <h2 style="margin:0 0 6px">우리의 버킷리스트</h2>
+          <div class="row" style="margin:8px 0 12px">
+            <input id="todoInput" class="tag" type="text" placeholder="함께 하고 싶은 것 추가하기" style="min-width:260px;background:#081022;color:#cfe7ff">
+            <button class="btn" id="addTodo">추가</button>
+            <button class="btn" id="clearTodo">전체 삭제</button>
+          </div>
+          <div id="todoList" class="list"></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Reason cards -->
+    <section class="card" style="margin-top:18px">
+      <div class="hd"><span class="tag">100 little reasons</span></div>
+      <div class="bd">
+        <h2 style="margin:0 0 8px">너를 사랑하는 작은 이유들</h2>
+        <p class="subtitle" style="text-align:left;margin:0 0 12px">랜덤으로 하나 뽑아보자 💌</p>
+        <div class="row">
+          <input id="reasonInput" class="tag" type="text" placeholder="이유 추가 (예: 웃는 모습)">
+          <button class="btn" id="addReason">추가</button>
+          <button class="btn" id="pickReason">하나 뽑기</button>
+          <button class="btn" id="clearReason">전체 삭제</button>
+        </div>
+        <div id="reasonPick" class="pill" style="margin-top:12px;text-align:left"></div>
+        <div id="reasons" class="list"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    © <span id="year"></span> 승빈 × 유리 — made with a lot of ☕ + ❤️
+  </footer>
+
+  <script>
+    // ===== Helpers: LocalStorage wrappers =====
+    const LS = {
+      get: (k, d) => { try{ return JSON.parse(localStorage.getItem(k)) ?? d }catch{ return d } },
+      set: (k, v) => localStorage.setItem(k, JSON.stringify(v)),
+      del: (k) => localStorage.removeItem(k)
+    }
+
+    // ===== Floating heart particles (canvas) =====
+    ;(function hearts(){
+      const cvs = document.getElementById('bg');
+      const ctx = cvs.getContext('2d');
+      let W, H, parts = [];
+      const rand = (a,b)=>Math.random()*(b-a)+a
+      const resize = ()=>{ W = cvs.width = innerWidth; H = cvs.height = innerHeight }
+      addEventListener('resize', resize); resize();
+      function spawn(){
+        const x = rand(0, W), y = rand(H*0.2, H*1.1);
+        const s = rand(6, 18), vy = rand(-.6, -1.4), vx = rand(-.3, .3), rot = rand(0, Math.PI*2);
+        const hue1 = 310 + rand(-10, 10), hue2 = 200 + rand(-10, 10);
+        parts.push({x,y,s,vy,vx,rot,h1:hue1,h2:hue2, life: rand(0.5,1)});
+      }
+      for(let i=0;i<80;i++) spawn();
+      function heartPath(x,y,s,rot){
+        ctx.save(); ctx.translate(x,y); ctx.rotate(rot); ctx.scale(s/24, s/24); ctx.beginPath();
+        ctx.moveTo(12,21); ctx.bezierCurveTo(12,21,4.5,16.2,2.4,12.1);
+        ctx.bezierCurveTo(0.3,8.9,2.1,5.2,5.4,4.3);
+        ctx.bezierCurveTo(7.3,3.8,9.3,4.5,10.5,5.9);
+        ctx.bezierCurveTo(11.6,4.5,13.7,3.8,15.6,4.3);
+        ctx.bezierCurveTo(18.9,5.2,20.7,8.9,18.6,12.1);
+        ctx.bezierCurveTo(16.5,16.2,12,21,12,21); ctx.closePath(); ctx.restore();
+      }
+      function draw(){
+        ctx.clearRect(0,0,W,H);
+        for(const p of parts){
+          p.x += p.vx; p.y += p.vy; p.rot += 0.002; if(p.y < -30) { p.y = H + 20; p.x = rand(0,W) }
+          const g = ctx.createLinearGradient(p.x-12,p.y-12,p.x+12,p.y+12);
+          g.addColorStop(0, `hsla(${p.h1},100%,75%,${p.life})`);
+          g.addColorStop(1, `hsla(${p.h2},100%,76%,${p.life})`);
+          ctx.fillStyle = g; heartPath(p.x,p.y,p.s,p.rot); ctx.fill();
+        }
+        requestAnimationFrame(draw);
+      }
+      draw();
+    })();
+
+    // ===== Together Counter =====
+    const startKey = 'love:start';
+    const startDateEl = document.getElementById('startDate');
+    const savedStart = LS.get(startKey);
+    if(savedStart) startDateEl.value = savedStart;
+    else startDateEl.valueAsDate = new Date(); // TODO: 둘이 시작한 날로 변경!
+
+    function updateCounter(){
+      const from = new Date(startDateEl.value);
+      const diff = Math.max(0, Date.now() - from.getTime());
+      const d = Math.floor(diff/ (1000*60*60*24));
+      const h = Math.floor((diff/ (1000*60*60)) % 24);
+      const m = Math.floor((diff/ (1000*60)) % 60);
+      const s = Math.floor((diff/ 1000) % 60);
+      dEl.textContent = d; hEl.textContent = h; mEl.textContent = m; sEl.textContent = s;
+    }
+    const dEl = document.getElementById('d');
+    const hEl = document.getElementById('h');
+    const mEl = document.getElementById('m');
+    const sEl = document.getElementById('s');
+    updateCounter(); setInterval(updateCounter, 1000);
+    document.getElementById('saveStart').onclick = () => { LS.set(startKey, startDateEl.value); updateCounter(); bump('#counter'); }
+
+    // ===== Timeline =====
+    const tlKey = 'love:timeline';
+    const tlBox = document.getElementById('timeline');
+    const tlDate = document.getElementById('tlDate');
+    const tlText = document.getElementById('tlText');
+
+    function renderTL(){
+      const items = LS.get(tlKey, []);
+      tlBox.innerHTML = items.map(({date, text}, i)=>`
+        <div class="step">
+          <div class="dot2"></div>
+          <div>
+            <h4>${date} · ${escapeHtml(text)}</h4>
+            <button class="tag" onclick="delStep(${i})">삭제</button>
+          </div>
+        </div>`).join('') || '<p style="color:var(--muted)">첫 기록을 남겨볼까? 오른쪽에 날짜와 문장을 입력하고 <b>추가</b>를 눌러줘!</p>';
+    }
+    function addStep(){
+      const date = tlDate.value || new Date().toISOString().slice(0,10);
+      const text = tlText.value.trim(); if(!text) return;
+      const items = LS.get(tlKey, []); items.unshift({date, text}); LS.set(tlKey, items); tlText.value=''; renderTL(); bump('#story');
+    }
+    function delStep(idx){ const items = LS.get(tlKey, []); items.splice(idx,1); LS.set(tlKey, items); renderTL(); }
+    function clearStep(){ if(confirm('타임라인을 모두 삭제할까요?')) { LS.del(tlKey); renderTL(); } }
+    document.getElementById('addStep').onclick = addStep;
+    document.getElementById('clearStep').onclick = clearStep;
+    renderTL();
+
+    // ===== Gallery =====
+    const gKey = 'love:gallery';
+    const phs = [...document.querySelectorAll('.ph')];
+    function bindGallery(){
+      phs.forEach((box, i)=>{
+        const input = box.querySelector('input');
+        input.addEventListener('change', async ()=>{
+          const file = input.files?.[0]; if(!file) return;
+          const dataUrl = await fileToDataURL(file); setImg(i, dataUrl); bump('#gallery');
+        });
+      })
+    }
+    async function fileToDataURL(file){ return new Promise((res, rej)=>{ const fr = new FileReader(); fr.onload = ()=>res(fr.result); fr.onerror = rej; fr.readAsDataURL(file); }) }
+    function setImg(i, dataUrl){
+      let imgs = LS.get(gKey, Array(phs.length).fill(null));
+      imgs[i] = dataUrl; LS.set(gKey, imgs); renderGallery();
+    }
+    function renderGallery(){
+      const imgs = LS.get(gKey, Array(phs.length).fill(null));
+      phs.forEach((box,i)=>{
+        const old = box.querySelector('img'); if(old) old.remove();
+        const src = imgs[i];
+        if(src){ const img = new Image(); img.src = src; box.appendChild(img); box.querySelector('label').style.opacity=.0 }
+        else { box.querySelector('label').style.opacity=1 }
+      })
+    }
+    function saveGallery(){ bump('#gallery'); alert('갤러리가 저장되었습니다 (이 브라우저에만 보관)'); }
+    function clearGallery(){ if(confirm('사진을 모두 비울까요?')){ LS.del(gKey); renderGallery(); } }
+    bindGallery(); renderGallery();
+    document.getElementById('saveGallery').onclick = saveGallery;
+    document.getElementById('clearGallery').onclick = clearGallery;
+
+    // ===== Love Letter =====
+    const llKey = 'love:letters';
+    const area = document.getElementById('letterArea');
+    const list = document.getElementById('letters');
+
+    function renderLetters(){
+      const arr = LS.get(llKey, []);
+      list.innerHTML = arr.map((it, i)=>`<div class="li"><div style="flex:1">
+        <div style="opacity:.7;font-size:12px">${new Date(it.ts).toLocaleString()}</div>
+        <div style="margin-top:4px">${escapeHtml(it.text)}</div>
+      </div>
+      <div class="row"><button class="tag" onclick="delLetter(${i})">삭제</button></div></div>`).join('') || '<p style="color:var(--muted)">아직 편지가 없어요. 첫 마음을 남겨보자 ✍️</p>'
+    }
+    function saveLetter(){ const t = area.value.trim(); if(!t) return; const arr = LS.get(llKey, []); arr.unshift({ts:Date.now(), text:t}); LS.set(llKey, arr); area.value=''; renderLetters(); bump('#letter'); }
+    function delLetter(i){ const arr = LS.get(llKey, []); arr.splice(i,1); LS.set(llKey, arr); renderLetters(); }
+    document.getElementById('saveLetter').onclick = saveLetter;
+    document.getElementById('newLetter').onclick = ()=> area.value='';
+    renderLetters();
+
+    // ===== Bucket List =====
+    const todoKey = 'love:todos';
+    const todoList = document.getElementById('todoList');
+    const todoInput = document.getElementById('todoInput');
+    function renderTodo(){
+      const arr = LS.get(todoKey, []);
+      todoList.innerHTML = arr.map((it,i)=>`<div class="li">
+        <input type="checkbox" ${it.done?'checked':''} onchange="toggleTodo(${i})"/>
+        <div style="flex:1;${it.done?'text-decoration:line-through;opacity:.7':''}">${escapeHtml(it.text)}</div>
+        <button class="tag" onclick="delTodo(${i})">삭제</button>
+      </div>`).join('') || '<p style="color:var(--muted)">가볍게 하나부터 추가해볼까? (예: 한강 야 picnic)</p>'
+    }
+    function addTodo(){ const t = todoInput.value.trim(); if(!t) return; const arr = LS.get(todoKey, []); arr.unshift({text:t, done:false}); LS.set(todoKey, arr); todoInput.value=''; renderTodo(); bump('#bucket'); }
+    function toggleTodo(i){ const arr = LS.get(todoKey, []); arr[i].done = !arr[i].done; LS.set(todoKey, arr); renderTodo(); }
+    function delTodo(i){ const arr = LS.get(todoKey, []); arr.splice(i,1); LS.set(todoKey, arr); renderTodo(); }
+    function clearTodo(){ if(confirm('버킷리스트를 모두 삭제할까요?')) { LS.del(todoKey); renderTodo(); } }
+    document.getElementById('addTodo').onclick = addTodo;
+    document.getElementById('clearTodo').onclick = clearTodo;
+    renderTodo();
+
+    // ===== Reasons =====
+    const rKey = 'love:reasons';
+    const reasons = document.getElementById('reasons');
+    const reasonInput = document.getElementById('reasonInput');
+    const reasonPick = document.getElementById('reasonPick');
+    function renderReasons(){
+      const arr = LS.get(rKey, []);
+      reasons.innerHTML = arr.map((t,i)=>`<div class="li"><div style="flex:1">${escapeHtml(t)}</div><button class="tag" onclick="delReason(${i})">삭제</button></div>`).join('') || '<p style="color:var(--muted)">이유를 추가해두면 랜덤으로 뽑아줘요!</p>'
+    }
+    function addReason(){ const t = reasonInput.value.trim(); if(!t) return; const arr = LS.get(rKey, []); arr.unshift(t); LS.set(rKey, arr); reasonInput.value=''; renderReasons(); bump('#reasons'); }
+    function delReason(i){ const arr = LS.get(rKey, []); arr.splice(i,1); LS.set(rKey, arr); renderReasons(); }
+    function pickReason(){ const arr = LS.get(rKey, []); if(arr.length===0) return; const i = Math.floor(Math.random()*arr.length); reasonPick.textContent = '• ' + arr[i]; reasonPick.classList.add('pop'); setTimeout(()=>reasonPick.classList.remove('pop'), 400); }
+    document.getElementById('addReason').onclick = addReason;
+    document.getElementById('clearReason').onclick = ()=>{ if(confirm('모든 이유를 지울까요?')){ LS.del(rKey); renderReasons(); } }
+    document.getElementById('pickReason').onclick = pickReason;
+    renderReasons();
+
+    // ===== Misc =====
+    document.getElementById('year').textContent = new Date().getFullYear();
+    function escapeHtml(s){ return s.replace(/[&<>"']/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m])) }
+    function bump(sel){ const el = document.querySelector(sel); el?.classList.add('pop'); setTimeout(()=>el?.classList.remove('pop'), 400) }
+  </script>
+</body>
+</html>
